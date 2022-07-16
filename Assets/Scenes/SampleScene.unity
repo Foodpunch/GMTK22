@@ -1219,6 +1219,53 @@ Transform:
   m_Father: {fileID: 1418663254}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1135844122
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1135844123}
+  - component: {fileID: 1135844124}
+  m_Layer: 0
+  m_Name: VFXManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1135844123
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135844122}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5999999, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1135844124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135844122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b5f4b60782cce24eb7020f4076bc1d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VFXObjects:
+  - {fileID: 2792459787758761511, guid: bbea3aa6d575dfc40b6a4d2a7b49b8ac, type: 3}
+  - {fileID: 5660942414202970350, guid: ba7f53df4a2645344b654b113477b6e6, type: 3}
+  - {fileID: 2842381263710886888, guid: 6aa30b9a53aedf8458135c8a2af0955d, type: 3}
 --- !u!1 &1175025944
 GameObject:
   m_ObjectHideFlags: 0
@@ -1315,10 +1362,20 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5ba46306188c6aa499531837e149290c, type: 3}
   - {fileID: 8300000, guid: ac0fd53f4dc69e9429b6e3d44dd4c950, type: 3}
   - {fileID: 8300000, guid: de203eb858ac450409164db79b1ef04a, type: 3}
-  ReloadSounds: []
-  ImpactSounds: []
+  ReloadSounds:
+  - {fileID: 8300000, guid: 9f003dfd765c1dc4786f40857a91e160, type: 3}
+  - {fileID: 8300000, guid: dcec96b7e17ca8f43b18f3f3ca21c960, type: 3}
+  - {fileID: 8300000, guid: 0bef53af098e71a4ab4c687b50b91cb2, type: 3}
+  - {fileID: 8300000, guid: a17584a4652cc5f44a62c7fc9832a693, type: 3}
+  - {fileID: 8300000, guid: 1f7eea818a5c94249a6b865ce3c1e008, type: 3}
+  ImpactSounds:
+  - {fileID: 8300000, guid: 36a2d188ba45df442b0c1712b3a116b3, type: 3}
+  - {fileID: 8300000, guid: 04421a95a954f9a428333aec063a6b58, type: 3}
+  - {fileID: 8300000, guid: b8026f8b6af866f458a0f55c732bd2ff, type: 3}
   EnemyHurtSounds: []
-  ExplosionSounds: []
+  ExplosionSounds:
+  - {fileID: 8300000, guid: 3f18ada37164bbc40aa3b5f0fda7a693, type: 3}
+  - {fileID: 8300000, guid: d100704c2a423f745a17f0c114f54c02, type: 3}
   HurtSounds: []
   MiscSounds: []
 --- !u!4 &1316115087

@@ -39,6 +39,7 @@ public class GunManager : MonoBehaviour
     {
         currGun = Guns[UnityEngine.Random.Range(0, Guns.Count)];
         gunSprite.sprite = currGun.gunSprite;
+        AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.ReloadSounds[Guns.IndexOf(currGun)], transform.position);
     }
     // Update is called once per frame
     void Update()
@@ -62,6 +63,7 @@ public class GunManager : MonoBehaviour
     private void SpawnBullet()
     {
         //play sound and vfx here
+        AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.ShootSounds[Guns.IndexOf(currGun)], 0.2f,shootPoint.position);
         for (int i = 0; i < currGun.pelletCount; i++)
         {
             float spreadRange = UnityEngine.Random.Range(-(currGun.spreadAngle * currGun.pelletCount), currGun.spreadAngle * currGun.pelletCount);
