@@ -91,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(1))
         {
+            GunManager.instance.RollGun();
             DoDodgeRoll();
             state = State.DodgeRollSliding;
             slideDir = (Camera.main.ScreenToWorldPoint(mouseInput) - transform.position).normalized;
