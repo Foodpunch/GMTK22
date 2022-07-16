@@ -5,6 +5,7 @@ using UnityEngine;
 public class Gun : MonoBehaviour
 {
     //Gun Blueprint or whatever hacking it in
+    public int damage;
     public float fireRate;
     public float spreadAngle;
     public int pelletCount;
@@ -13,12 +14,12 @@ public class Gun : MonoBehaviour
     public int maxAmmo;
     public bool InfAmmo;
     public Transform shootPoint;
-    public GameObject bulletPrefab;
+    public BulletScript bulletPrefab;
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        bulletPrefab.bulletDamage = damage;
     }
 
     // Update is called once per frame

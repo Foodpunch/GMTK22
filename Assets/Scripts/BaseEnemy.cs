@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NaughtyAttributes;
 
 public class BaseEnemy : MonoBehaviour,IDamageable
 {
@@ -33,12 +34,17 @@ public class BaseEnemy : MonoBehaviour,IDamageable
         currHP -= damage;
         if(currHP<=0)
         {
-
+            Die();
         }
     }
+    
+    [Button]
     void Die()
     {
         AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.MiscSounds[3], 0.2f, transform.position, true);
+        Vector2 dir = (transform.position - playerTransform.position).normalized;
+        VFXManager.instance.BloodSplat(dir,transform.position);
+        VFXManager.instance.BloodSpray(transform.position);
         gameObject.SetActive(false);
     }
 }

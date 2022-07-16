@@ -6,12 +6,16 @@ using UnityEngine;
 public class BulletScript : MonoBehaviour
 {
     float bulletAirTime;
-    public float bulletDamage;
+    [SerializeField]
+    float bulletSpeed;
+    [HideInInspector]
+    public float bulletDamage=1f;
 
     [SerializeField]
     bool isExplosive = false;
-    float explosionRadius = 2f;
+    float explosionRadius = 1.2f;
 
+    public LayerMask bulletLayer;
 
     Rigidbody2D _rb;
     // Start is called before the first frame update
@@ -24,6 +28,7 @@ public class BulletScript : MonoBehaviour
     void Update()
     {
         bulletAirTime += Time.deltaTime;
+        _rb.velocity = transform.right * bulletSpeed;
         if(bulletAirTime >= 3f)
         {
             Despawn();
@@ -41,6 +46,7 @@ public class BulletScript : MonoBehaviour
     void Explode()
     {
         VFXManager.instance.Boom(transform.position);
+        //for the sound shit
         if(Vector2.Distance(PlayerMovement.instance.transform.position,transform.position) <=10f)
         {
             AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.ExplosionSounds[0], transform.position);
@@ -51,15 +57,15 @@ public class BulletScript : MonoBehaviour
         }
       
         CamShaker.instance.Trauma += 0.2f;
-        Collider2D[] explosionHits = Physics2D.OverlapCircleAll(transform.position, explosionRadius);
+        Collider2D[] explosionHits = Physics2D.OverlapCircleAll(transform.position, explosionRadius,bulletLayer);
         foreach (Collider2D coll in explosionHits)
         {
             if (coll.GetComponent<Rigidbody2D>() != null)
             {
                 Rigidbody2D objRB = coll.GetComponent<Rigidbody2D>();
                 objRB.AddForce((objRB.transform.position - transform.position).normalized * 5f, ForceMode2D.Impulse);
-                SendDamage(coll);
             }
+            SendDamage(coll);
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)

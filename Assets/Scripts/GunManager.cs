@@ -45,6 +45,7 @@ public class GunManager : MonoBehaviour
     {
         if(Input.GetMouseButton(0))
         {
+           
             FireGun();
         }
     }
@@ -53,11 +54,26 @@ public class GunManager : MonoBehaviour
     {
         if (Time.time >= NextTimeToFire)
         {
+            if (Guns.IndexOf(currGun) == 3)
+            {
+                FireSniper();
+            }
             SpawnBullet();
             NextTimeToFire = Time.time + (1f / currGun.fireRate);
         }
     }
-
+    public void FireSniper()
+    {
+        RaycastHit2D[] raycasthit2D = Physics2D.RaycastAll(shootPoint.position, shootPoint.transform.right);
+        for(int i = 0; i<raycasthit2D.Length; ++i)
+        {
+            raycasthit2D[i].collider.gameObject.GetComponent<IDamageable>()?.OnTakeDamage(currGun.damage);
+            if(raycasthit2D[i].collider.gameObject.GetComponent<IDamageable>() == null)
+            {
+                AudioManager.instance.PlayCachedSound(AudioManager.instance.ImpactSounds, transform.position, 0.2f);
+            }
+        }
+    }
     private void SpawnBullet()
     {
         //play sound and vfx here
@@ -66,8 +82,7 @@ public class GunManager : MonoBehaviour
         {
             float spreadRange = UnityEngine.Random.Range(-(currGun.spreadAngle * currGun.pelletCount), currGun.spreadAngle * currGun.pelletCount);
             Quaternion randomArc = Quaternion.Euler(0, 0, spreadRange);
-            GameObject bulletClone = Instantiate(currGun.bulletPrefab, shootPoint.position, transform.rotation * randomArc);
-            bulletClone.GetComponent<Rigidbody2D>().velocity = bulletClone.transform.right * 20f;
+            GameObject bulletClone = Instantiate(currGun.bulletPrefab.gameObject, shootPoint.position, transform.rotation * randomArc);
         }
     }
 }

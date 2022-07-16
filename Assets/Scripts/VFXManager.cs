@@ -7,6 +7,7 @@ public class VFXManager : MonoBehaviour
     public static VFXManager instance;
 
     public GameObject[] VFXObjects;
+    public GameObject[] BloodSplats;
 
     // Start is called before the first frame update
     private void Awake()
@@ -30,15 +31,18 @@ public class VFXManager : MonoBehaviour
         spark.transform.right = normal;
         Destroy(spark, 2f);
     }
-    public void BloodSplat(Vector3 dir)
+    public void BloodSplat(Vector3 dir,Vector3 pos)
     {
-        GameObject splat = Instantiate(VFXObjects[3], transform.position, Quaternion.identity);
+        GameObject splat = Instantiate(BloodSplats[Random.Range(0,BloodSplats.Length)], pos, Quaternion.identity);
+        Color newColor = Color.HSVToRGB(0, 0, (Random.Range(0.4f, 1f)));
+        splat.GetComponent<SpriteRenderer>().color = newColor;
         splat.transform.right = dir;
-        Destroy(splat, 2f);
+        splat.transform.rotation *= Quaternion.Euler(0, 0, Random.Range(-5f, 5f));
+        splat.transform.SetParent(transform);
     }
     public void BloodSpray(Vector3 pos)
     {
-        Instantiate(VFXObjects[4], transform.position, Quaternion.identity);
+        Instantiate(VFXObjects[3], pos, Quaternion.identity);
     }
   
 }
