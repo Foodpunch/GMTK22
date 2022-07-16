@@ -32,6 +32,8 @@ public class PlayerMovement : MonoBehaviour
     public Image playerHPBar;
     public Animator playerAnim;
 
+    float NextTimeToRoll;
+
     enum State
     {
         Normal,
@@ -40,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
     State state;
 
     [SerializeField]
-    LayerMask RollingLayer;     //for when the player is dodgerolling, avoid enemies
+    LayerMask DodgeRollLayer;     //for when the player is dodgerolling, avoid enemies
 
 
     private void Awake()
@@ -89,24 +91,29 @@ public class PlayerMovement : MonoBehaviour
 
     void HandleDodgeRoll()
     {
-        if(Input.GetMouseButtonDown(1))
+        if(Time.time >= NextTimeToRoll)
         {
-            GunManager.instance.RollGun();
-            DoDodgeRoll();
-            state = State.DodgeRollSliding;
-            slideDir = (Camera.main.ScreenToWorldPoint(mouseInput) - transform.position).normalized;
-            rollSpeed = ROLLSPEED;
+            if (Input.GetMouseButtonDown(1))
+            {
+                GunManager.instance.RollGun();
+                DoDodgeRoll();
+                state = State.DodgeRollSliding;
+                slideDir = (Camera.main.ScreenToWorldPoint(mouseInput) - transform.position).normalized;
+                rollSpeed = ROLLSPEED;
+            }
         }
     }
 
     void DoDodgeRoll()
     {
-        //transform.position += (Vector3)slideDir * rollSpeed * Time.deltaTime;
+        gameObject.layer = 7;
         moveVelocity = slideDir * rollSpeed;
         rollSpeed -= rollSpeed *15f* Time.deltaTime;
-        if(rollSpeed <= 5)
+        if(rollSpeed <= 1)
         {
+            gameObject.layer = 3;
             state = State.Normal;
+            NextTimeToRoll = Time.time + 3f;
         }
 
     }

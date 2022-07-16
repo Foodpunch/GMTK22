@@ -11,7 +11,6 @@ public class GunManager : MonoBehaviour
     [SerializeField]
     int pelletCount = 5;
 
-    float gunTime;
     float NextTimeToFire;
 
     [SerializeField]
@@ -52,7 +51,6 @@ public class GunManager : MonoBehaviour
 
     private void FireGun()
     {
-        gunTime += Time.deltaTime;
         if (Time.time >= NextTimeToFire)
         {
             SpawnBullet();

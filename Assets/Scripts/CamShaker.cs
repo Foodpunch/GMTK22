@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using NaughtyAttributes;
 public class CamShaker : MonoBehaviour
 {
 
@@ -69,6 +70,7 @@ public class CamShaker : MonoBehaviour
         }
 
     }
+    [Button]
     void Shake()
     {
         Trauma += 0.5f;
