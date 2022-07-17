@@ -17,6 +17,8 @@ public class UpgradeManager : MonoBehaviour
     List<Upgrade> SelectedUpgrades= new List<Upgrade>();
     // Start is called before the first frame update
     public Sprite[] DiceNumbers;
+    public CanvasGroup UpgradeCanvasGroup;
+    public GameObject upgradeObj;
     private void Awake()
     {
         instance = this;
@@ -33,6 +35,7 @@ public class UpgradeManager : MonoBehaviour
     }
     public void RollTutorial()
     {
+        StartCoroutine(DisableCanvas());
         UpgradeParticles.gameObject.SetActive(true);
         isActive = true;
         UpgradePanel.SetActive(true);
@@ -46,7 +49,8 @@ public class UpgradeManager : MonoBehaviour
         }
     }
     public void RollUpgrades()
-    {
+    {   
+        StartCoroutine(DisableCanvas());
         UpgradeParticles.gameObject.SetActive(true);
         isActive = true;
         UpgradePanel.SetActive(true);
@@ -68,24 +72,33 @@ public class UpgradeManager : MonoBehaviour
     }
     void ChooseUpgrades()
     {
-        if(GunManager.instance.TotalAmmo() <=20)//assuming maayabe this means 1 gun out of ammo?
+        GunManager.instance.pitySpawn = false;
+        if (GunManager.instance.TotalAmmo() <= 20)//assuming maayabe this means 1 gun out of ammo?
         {
             SelectedUpgrades.Add(RecurringUpgrades[4]);//give max ammo option
-        }
-        else SelectedUpgrades.Add(RecurringUpgrades[Random.Range(0, RecurringUpgrades.Count)]);
-        if (UniqueUpgrades.Count >0)
-        {
-              SelectedUpgrades.Add(UniqueUpgrades[Random.Range(0, UniqueUpgrades.Count)]);
         }
         else
         {
             SelectedUpgrades.Add(RecurringUpgrades[Random.Range(0, RecurringUpgrades.Count)]);
         }
-
+        if (UniqueUpgrades.Count > 0)
+        {
+            SelectedUpgrades.Add(UniqueUpgrades[Random.Range(0, UniqueUpgrades.Count)]);
+        }
+        else
+        {
+            SelectedUpgrades.Add(RecurringUpgrades[Random.Range(0, RecurringUpgrades.Count)]);
+        }
         for (int i=0; i< SelectedUpgrades.Count;++i)
         {
             SelectedUpgrades[i].gameObject.SetActive(true);
             if(!SelectedUpgrades[i].fixedAmount) SelectedUpgrades[i].RollStats();
         }
+    }
+    IEnumerator DisableCanvas()
+    {
+        UpgradeCanvasGroup.interactable = false;
+        yield return new WaitForSecondsRealtime(1.3f);
+        UpgradeCanvasGroup.interactable = true;
     }
 }

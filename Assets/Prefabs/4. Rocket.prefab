@@ -45,11 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e191389e4e3c18543a4b572fd8de280c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gunName: 
   damage: 1
   fireRate: 1
   spreadAngle: 0
   pelletCount: 1
-  gunSprite: {fileID: -4107299297984904772, guid: 7dc21e7994d068e4298ad3cbd3d7f542, type: 3}
+  gunSprite: {fileID: 2061618920330272373, guid: 8ef2d9ca5955f7745b44ab26bb7534bd, type: 3}
   currAmmo: 0
   maxAmmo: 6
   InfAmmo: 0
@@ -156,7 +157,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: -4107299297984904772, guid: 7dc21e7994d068e4298ad3cbd3d7f542, type: 3}
+  m_Sprite: {fileID: 2061618920330272373, guid: 8ef2d9ca5955f7745b44ab26bb7534bd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

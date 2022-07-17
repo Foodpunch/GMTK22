@@ -55,20 +55,9 @@ public class AudioManager : MonoBehaviour
         //        GameOverSource.Play();
         //    }
         //}
-        if (isBossTime && !isGameOver)
-        {
-            fadeTime += Time.deltaTime;
-            if (fadeTime < 1f)
-            {
-                BGMSource.volume = Mathf.Lerp(0.234f, 0f, fadeTime);
-                BossBGMSource.volume = Mathf.Lerp(0, 0.234f, fadeTime);
-                BossBGMSource.Play();
-            }
-        }
         if(isGameOver)
         {
-            BGMSource.volume -= Time.deltaTime/5f;
-            BossBGMSource.volume -= Time.deltaTime/5f;
+            BGMSource.volume -= Time.unscaledTime/5f;
         }
     }
 

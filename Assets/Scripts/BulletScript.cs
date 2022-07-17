@@ -13,7 +13,7 @@ public class BulletScript : MonoBehaviour
 
     [SerializeField]
     bool isExplosive = false;
-    float explosionRadius = 1.2f;
+    float explosionRadius = 2f;
 
     public LayerMask bulletLayer;
     [SerializeField]
@@ -30,7 +30,6 @@ public class BulletScript : MonoBehaviour
     {
         bulletAirTime += Time.deltaTime;
         _rb.velocity = transform.right * bulletSpeed;
-        Debug.Log(bulletDamage);
         if(bulletAirTime >= 3f)
         {
             Despawn();

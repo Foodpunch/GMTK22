@@ -15,10 +15,12 @@ public class GunManager : MonoBehaviour
     public static GunManager instance;
 
     public List<Gun> Guns;
+    List<Gun> AvailableGuns = new List<Gun>();
     public Gun currGun;
 
     [SerializeField]
     SpriteRenderer gunSprite;
+    public bool pitySpawn = false;
     private void Awake()
     {
         instance = this;
@@ -30,7 +32,24 @@ public class GunManager : MonoBehaviour
     }
     public void RollGun()
     {
-        currGun = Guns[UnityEngine.Random.Range(0, Guns.Count)];
+        AvailableGuns.Clear();
+        //Check Gun Ammo
+        for (int i=0; i< Guns.Count; ++i)
+        {
+            if(Guns[i].currAmmo >0)
+            {
+                AvailableGuns.Add(Guns[i]);
+            }
+        }
+        if (AvailableGuns.Count > 0)
+        {
+            currGun = AvailableGuns[UnityEngine.Random.Range(0, AvailableGuns.Count)];
+        }
+        else
+        {
+            currGun = Guns[UnityEngine.Random.Range(0, Guns.Count)]; 
+        }
+        if (TotalAmmo() <= 0 && !pitySpawn) StartCoroutine(PitySpawn());
         gunSprite.sprite = currGun.gunSprite;
         AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.ReloadSounds[Guns.IndexOf(currGun)], transform.position);
     }
@@ -60,6 +79,7 @@ public class GunManager : MonoBehaviour
             SpawnBullet();
             NextTimeToFire = Time.time + (1f / currGun.fireRate);
             currGun.currAmmo--;
+            GameManager.instance.shotsfired++;
         }
     }
     public void FireSniper()
@@ -68,6 +88,7 @@ public class GunManager : MonoBehaviour
         for(int i = 0; i<raycasthit2D.Length; ++i)
         {
             raycasthit2D[i].collider.gameObject.GetComponent<IDamageable>()?.OnTakeDamage(currGun.damage);
+            VFXManager.instance.Poof(raycasthit2D[i].collider.gameObject.transform.position);
             if(raycasthit2D[i].collider.gameObject.GetComponent<IDamageable>() == null)
             {
                 AudioManager.instance.PlayCachedSound(AudioManager.instance.ImpactSounds, transform.position, 0.2f);
@@ -94,5 +115,19 @@ public class GunManager : MonoBehaviour
             temp += Guns[i].currAmmo;
         }
         return temp;
+    }
+    IEnumerator PitySpawn()
+    {
+        yield return new WaitForSeconds(3f);
+        Vector2 pos;
+        float RightX = Camera.main.ViewportToWorldPoint(Vector2.one).x - UnityEngine.Random.Range(0, 5);
+        float LeftX = RightX * -1;
+        Vector2 RightSpawnPos = new Vector2(RightX, UnityEngine.Random.Range(-3f, 3f));
+        Vector2 LeftSpawnPos = new Vector2(LeftX, UnityEngine.Random.Range(-3f, 3f));
+        int rand = UnityEngine.Random.Range(0, 2);
+        if (rand % 2 == 0) pos = RightSpawnPos;
+        else pos = LeftSpawnPos;
+        Instantiate(UpgradeManager.instance.upgradeObj, GameManager.instance.Spawnpoints[UnityEngine.Random.Range(0,GameManager.instance.Spawnpoints.Length)].position, Quaternion.identity);
+        pitySpawn = true;
     }
 }

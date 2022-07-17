@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
 
 
     public float moveSpeed;
-    const float ROLLSPEED = 100f;
+    const float ROLLSPEED = 120f;
     float rollSpeed;
     Rigidbody2D _rb;
 
@@ -26,16 +26,15 @@ public class PlayerMovement : MonoBehaviour
     Vector2 slideDir;
     //assuming player is using some capsule collider
 
-    float maxHp = 20;
-    public float currHP;
     public bool isDead;
-    public Image playerHPBar;
-    public Animator playerAnim;
 
     float NextTimeToRoll;
     [HideInInspector]
     public bool rollReady;
     bool bellDing = true;
+
+    public Animator legsAnim;
+    public Animator bodyAnim;
     enum State
     {
         Normal,
@@ -55,7 +54,6 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
-        currHP = maxHp;
         state = State.Normal;
     }
 
@@ -78,17 +76,11 @@ public class PlayerMovement : MonoBehaviour
                     break;
             }
         }
-        UpdateHP();
     }
     private void FixedUpdate()
     {
         _rb.MovePosition(_rb.position + moveVelocity * Time.fixedDeltaTime);
        // _rb.velocity = moveVelocity;
-    }
-    void UpdateHP()
-    {
-        
-       // playerHPBar.fillAmount = currHP / maxHp;
     }
 
     void HandleDodgeRoll()
@@ -99,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
             
             if (Input.GetMouseButtonDown(1))
             {
+                StartCoroutine(PlayerInvulnerable());
                 GunManager.instance.RollGun();
                 DoDodgeRoll();
                 state = State.DodgeRollSliding;
@@ -106,6 +99,7 @@ public class PlayerMovement : MonoBehaviour
                 rollSpeed = ROLLSPEED;
                 AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.MiscSounds[0],1f, transform.position);
                 bellDing = false;
+                bodyAnim.SetTrigger("Roll");
             }
         }
         if(rollReady &&!bellDing)
@@ -118,23 +112,28 @@ public class PlayerMovement : MonoBehaviour
 
     void DoDodgeRoll()
     {
-        gameObject.layer = 7;
         moveVelocity = slideDir * rollSpeed;
         rollSpeed -= rollSpeed *15f* Time.deltaTime;
         if(rollSpeed <= 1)
         {
             rollReady = false;
-            gameObject.layer = 3;
+            
             state = State.Normal;
-            NextTimeToRoll = Time.time + 3f;
+            NextTimeToRoll = Time.time + 2f;
         }
     }
 
-
+    IEnumerator PlayerInvulnerable()
+    {
+        gameObject.layer = 7;       //7:dodge roll layer
+        yield return new WaitForSeconds(0.5f);
+        gameObject.layer = 3;       //3: player layer
+    }
     void PlayerMovementInput()
     {
         playerInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         moveVelocity = playerInput * moveSpeed;
+        if (moveVelocity.magnitude > 0.051f) legsAnim.SetTrigger("Walking"); 
     }
     void SetGunToFaceMouse()
     {
@@ -148,19 +147,5 @@ public class PlayerMovement : MonoBehaviour
         float angle = gunHolder.transform.rotation.eulerAngles.z;
         gunSprite.flipY = (angle > 90f && angle < 270f);        //angle goes from 0 to 360. 
     }
-    public void TakeDamage(float damage)
-    {
-        currHP -= damage;
-        playerAnim.SetTrigger("hurt");
-        //AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.MiscSounds[6], 0.3f, transform.position);
-        if (currHP <= 0)
-        {
-            isDead = true;
-        }
-    }
-    public void AddHP(float health)
-    {
-        currHP += health;
-        if (currHP > maxHp) currHP = maxHp;
-    }
+    
 }

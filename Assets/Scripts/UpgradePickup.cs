@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UpgradePickup : MonoBehaviour
 {
+    bool triggered;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +18,7 @@ public class UpgradePickup : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        if(collision.CompareTag("Player")&&!UpgradeManager.instance.isActive)
         {
             UpgradeManager.instance.RollUpgrades();
             AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.MiscSounds[4], transform.position);

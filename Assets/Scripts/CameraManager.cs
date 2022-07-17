@@ -8,6 +8,9 @@ public class CameraManager : MonoBehaviour
     Transform player;
     [SerializeField]
     float threshold;
+    [SerializeField]
+    float lerpSpeed=2.5f;   //higher is tighter cam control
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,6 @@ public class CameraManager : MonoBehaviour
         Vector3 targetPos = (mousePos+ player.position) / 2f;
         targetPos.x = Mathf.Clamp(targetPos.x, -threshold + player.position.x, threshold + player.position.x);
         targetPos.y = Mathf.Clamp(targetPos.y, -threshold + player.position.y, threshold + player.position.y);
-        transform.localPosition = Vector3.Lerp(transform.localPosition,targetPos,Time.deltaTime*2.5f);
+        transform.localPosition = Vector3.Lerp(transform.localPosition,targetPos,Time.deltaTime*lerpSpeed);
     }
 }
