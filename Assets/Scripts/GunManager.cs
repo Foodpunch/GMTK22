@@ -5,12 +5,6 @@ using UnityEngine;
 
 public class GunManager : MonoBehaviour
 {
-    [SerializeField]
-    float fireRate;     ///firerate, more number more better
-    float spreadAngle = 8f;
-    [SerializeField]
-    int pelletCount = 5;
-
     float NextTimeToFire;
 
     [SerializeField]
@@ -43,11 +37,16 @@ public class GunManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0) && !UpgradeManager.instance.isActive && currGun.currAmmo <= 0)
         {
-           
+            AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.MiscSounds[2], transform.position);
+        }
+        if (Input.GetMouseButton(0) && !UpgradeManager.instance.isActive)
+        {
+            if (currGun.currAmmo <= 0) return;
             FireGun();
         }
+       
     }
 
     private void FireGun()
@@ -60,6 +59,7 @@ public class GunManager : MonoBehaviour
             }
             SpawnBullet();
             NextTimeToFire = Time.time + (1f / currGun.fireRate);
+            currGun.currAmmo--;
         }
     }
     public void FireSniper()
@@ -77,12 +77,22 @@ public class GunManager : MonoBehaviour
     private void SpawnBullet()
     {
         //play sound and vfx here
-        AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.ShootSounds[Guns.IndexOf(currGun)], 0.2f,shootPoint.position);
+        AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.ShootSounds[Guns.IndexOf(currGun)], 0.35f,shootPoint.position);
         for (int i = 0; i < currGun.pelletCount; i++)
         {
             float spreadRange = UnityEngine.Random.Range(-(currGun.spreadAngle * currGun.pelletCount), currGun.spreadAngle * currGun.pelletCount);
             Quaternion randomArc = Quaternion.Euler(0, 0, spreadRange);
             GameObject bulletClone = Instantiate(currGun.bulletPrefab.gameObject, shootPoint.position, transform.rotation * randomArc);
+            bulletClone.GetComponent<BulletScript>().bulletDamage = currGun.damage;
         }
+    }
+    public int TotalAmmo()
+    {
+        int temp = 0;
+        for(int i=0; i<Guns.Count;i++)
+        {
+            temp += Guns[i].currAmmo;
+        }
+        return temp;
     }
 }

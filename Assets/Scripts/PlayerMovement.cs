@@ -33,7 +33,9 @@ public class PlayerMovement : MonoBehaviour
     public Animator playerAnim;
 
     float NextTimeToRoll;
-
+    [HideInInspector]
+    public bool rollReady;
+    bool bellDing = true;
     enum State
     {
         Normal,
@@ -93,6 +95,8 @@ public class PlayerMovement : MonoBehaviour
     {
         if(Time.time >= NextTimeToRoll)
         {
+            rollReady = true;
+            
             if (Input.GetMouseButtonDown(1))
             {
                 GunManager.instance.RollGun();
@@ -100,7 +104,15 @@ public class PlayerMovement : MonoBehaviour
                 state = State.DodgeRollSliding;
                 slideDir = (Camera.main.ScreenToWorldPoint(mouseInput) - transform.position).normalized;
                 rollSpeed = ROLLSPEED;
+                AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.MiscSounds[0],1f, transform.position);
+                bellDing = false;
             }
+        }
+        if(rollReady &&!bellDing)
+        {
+            //maybe do some anim here 
+            AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.MiscSounds[1], 1f, transform.position);
+            bellDing = true;
         }
     }
 
@@ -111,11 +123,11 @@ public class PlayerMovement : MonoBehaviour
         rollSpeed -= rollSpeed *15f* Time.deltaTime;
         if(rollSpeed <= 1)
         {
+            rollReady = false;
             gameObject.layer = 3;
             state = State.Normal;
             NextTimeToRoll = Time.time + 3f;
         }
-
     }
 
 

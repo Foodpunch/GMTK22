@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 886147953}
   - component: {fileID: 886147952}
   m_Layer: 6
-  m_Name: Particle System
+  m_Name: Smoke Particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3926,12 +3926,12 @@ ParticleSystem:
     maxLights: 20
   TrailModule:
     enabled: 0
-    mode: 0
-    ratio: 1
+    mode: 1
+    ratio: 0.06
     lifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4946,6 +4946,7 @@ MonoBehaviour:
   bulletLayer:
     serializedVersion: 2
     m_Bits: 257
+  smoke: {fileID: 886147953}
 --- !u!1 &8778456973208611450
 GameObject:
   m_ObjectHideFlags: 0

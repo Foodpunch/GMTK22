@@ -16,7 +16,8 @@ public class BulletScript : MonoBehaviour
     float explosionRadius = 1.2f;
 
     public LayerMask bulletLayer;
-
+    [SerializeField]
+    ParticleSystem smoke;
     Rigidbody2D _rb;
     // Start is called before the first frame update
     void Start()
@@ -29,6 +30,7 @@ public class BulletScript : MonoBehaviour
     {
         bulletAirTime += Time.deltaTime;
         _rb.velocity = transform.right * bulletSpeed;
+        Debug.Log(bulletDamage);
         if(bulletAirTime >= 3f)
         {
             Despawn();
@@ -55,7 +57,9 @@ public class BulletScript : MonoBehaviour
         {
             AudioManager.instance.PlaySoundAtLocation(AudioManager.instance.ExplosionSounds[1], transform.position);
         }
-      
+        smoke.gameObject.transform.SetParent(null);
+        smoke.Stop();
+        
         CamShaker.instance.Trauma += 0.2f;
         Collider2D[] explosionHits = Physics2D.OverlapCircleAll(transform.position, explosionRadius,bulletLayer);
         foreach (Collider2D coll in explosionHits)

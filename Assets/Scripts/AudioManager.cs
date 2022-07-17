@@ -25,9 +25,11 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] ShootSounds;
     public AudioClip[] ReloadSounds;
     public AudioClip[] ImpactSounds;
-    public AudioClip[] EnemyHurtSounds;
+    public AudioClip[] ChipShootSounds;
+    public AudioClip[] ChipSpawnSounds;
+    public AudioClip[] EnemyGroan;
     public AudioClip[] ExplosionSounds;
-    public AudioClip[] HurtSounds;
+    public AudioClip[] DiceRollSounds;
     public AudioClip[] MiscSounds;
 
     private void Awake()

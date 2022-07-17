@@ -40,8 +40,8 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8718688104434623254}
   serializedVersion: 7
-  lengthInSec: 0.5
-  simulationSpeed: 1
+  lengthInSec: 0.15
+  simulationSpeed: 3
   stopAction: 2
   cullingMode: 0
   ringBufferMode: 0
@@ -606,7 +606,7 @@ ParticleSystem:
     gravityModifier:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.25
       minScalar: 0
       maxCurve:
         serializedVersion: 2
